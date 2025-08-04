@@ -24,8 +24,7 @@ jobs:
         run: | 
           uv venv
           source .venv/bin/activate
-          uv pip install -r requirements.txt
-          uv pip install pyinstaller
+          uv sync
       - name: Build with PyInstaller
         run: | 
           source .venv/bin/activate
@@ -52,8 +51,7 @@ jobs:
         run: | 
           uv venv
           .venv\Scripts\activate
-          uv pip install -r requirements.txt
-          uv pip install pyinstaller
+          uv sync
       - name: Build with PyInstaller
         run: | 
           .venv\Scripts\activate
@@ -80,8 +78,7 @@ jobs:
         run: | 
           uv venv
           source .venv/bin/activate
-          uv pip install -r requirements.txt
-          uv pip install pyinstaller
+          uv sync
       - name: Build with PyInstaller
         run: | 
           source .venv/bin/activate
