@@ -36,15 +36,3 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
 )
-
-app = BUNDLE(
-    exe,
-    name='HDMI Matrix Control.app',
-    icon=None,
-    bundle_identifier="com.prodyakkai.magicbox.hdmi_matrix_control",
-    version='0.0.1',
-    info_plist={
-    'NSPrincipalClass': 'NSApplication',
-    'NSAppleScriptEnabled': False,
-    },
-)

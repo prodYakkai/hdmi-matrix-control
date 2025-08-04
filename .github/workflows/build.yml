@@ -16,14 +16,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - name: Install uv
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
-      - name: Add uv to PATH
-        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-      - name: Create virtual environment and install dependencies
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+      - name: Install xcb libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxcb-keysyms1 libxcb-image0 libxcb-render-util0 libxcb-xinerama0 libxcb-icccm4 libxcb-randr0 libxcb-sync1 libxcb-xfixes0 libxkbcommon0  libxkbcommon-x11-0 libxcb-shape0 libxcomposite-dev libxcomposite1 libx11-xcb-dev libxcb-xkb-dev libxkbfile-dev libx11-dev
+      - name: Install dependencies
         run: | 
-          uv venv
-          source .venv/bin/activate
           uv sync
       - name: Build with PyInstaller
         run: | 
@@ -33,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: HDMI-Matrix-Control-linux
-          path: dist/"HDMI_Matrix_Control"
+          path: dist/HDMI_Matrix_Control
 
   build-windows:
     runs-on: windows-latest
@@ -43,10 +45,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - name: Install uv
-        run: | 
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
       - name: Create virtual environment and install dependencies
         run: | 
           uv venv
@@ -60,7 +62,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: HDMI-Matrix-Control-windows
-          path: dist/"HDMI_Matrix_Control.exe"
+          path: dist/HDMI_Matrix_Control.exe
 
   build-macos:
     runs-on: macos-latest
@@ -70,21 +72,19 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - name: Install uv
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
-      - name: Add uv to PATH
-        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-      - name: Create virtual environment and install dependencies
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+      - name: Install dependencies
         run: | 
-          uv venv
-          source .venv/bin/activate
           uv sync
       - name: Build with PyInstaller
         run: | 
           source .venv/bin/activate
-          pyinstaller HDMI_Matrix_Control.spec
+          pyinstaller build_macos.spec
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v4
         with:
           name: HDMI-Matrix-Control-macos
-          path: dist/"HDMI_Matrix_Control"
+          path: "dist/HDMI Matrix Control.app"
