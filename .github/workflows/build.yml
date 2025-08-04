@@ -54,6 +54,7 @@ jobs:
           uv venv
           .venv\Scripts\activate
           uv sync
+          uv pip install pyqt5
       - name: Build with PyInstaller
         run: | 
           .venv\Scripts\activate
