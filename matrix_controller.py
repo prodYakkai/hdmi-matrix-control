@@ -5,7 +5,7 @@ import socket
 import time
 import subprocess
 import sys
-
+import requests
 class MatrixController:
     def __init__(self, ip_address, port):
         self.ip_address = ip_address
@@ -66,7 +66,13 @@ class MatrixController:
 
     def check_connection(self):
         """Checks if the matrix is reachable via ping."""
-        param = '-n' if sys.platform == 'win32' else '-c'
-        command = ['ping', param, '1', '-W', '1', self.ip_address]
-        return subprocess.call(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) == 0
-
+       # check ping
+        try:
+            count_param = "-c" if sys.platform != "win32" else "-n"
+            output = subprocess.check_output(["ping", count_param, "1", self.ip_address], stderr=subprocess.STDOUT, universal_newlines=True)
+            if sys.platform == "win32":
+                return "TTL=" in output
+            else:
+                return "1 received" in output or "1 packets received" in output
+        except subprocess.CalledProcessError:
+            return False
